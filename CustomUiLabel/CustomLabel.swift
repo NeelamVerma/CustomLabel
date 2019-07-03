@@ -9,20 +9,17 @@
 import UIKit
 
 class CustomLabel: UILabel {
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        //self.text = "sdjsljdlsd sds dsd"
-    }
-    
     
     func attach() {
         let fullString = NSMutableAttributedString(attributedString: self.attributedText!)
         let image1Attachment = NSTextAttachment()
+        let img = UIColor.red.image(CGSize(width: 10, height: 10))
+        image1Attachment.bounds = CGRect(x: 100.0, y: 0, width: 10, height: 10)
+        image1Attachment.image = img
+        let str = NSAttributedString(attachment: image1Attachment)
+        fullString.append(str)
+        //  with padding
+        /*
         let img = UIImage(named: "icons8-play-50")?.maskWithColor(color: UIColor.red)
         print(self.font.pointSize)
         print(self.font.lineHeight)
@@ -41,6 +38,7 @@ class CustomLabel: UILabel {
         image1Attachment1.image = newImage1
         let image1String1 = NSAttributedString(attachment: image1Attachment1)
         fullString.insert(image1String1, at: 0)
+ */
         
         // draw the result in a label
         self.attributedText = fullString
@@ -48,7 +46,7 @@ class CustomLabel: UILabel {
     
     // Only override draw() if you perform custom drawing.
     //An empty implementation adversely affects performance during animation.
-    
+    /*
     override func draw(_ rect: CGRect) {
         // Drawing code
         super.drawText(in: rect)
@@ -65,7 +63,7 @@ class CustomLabel: UILabel {
         
         drawLineFromPoint(start: CGPoint(x: 0.0 , y: CGFloat(numberOflines) * self.font.lineHeight), toPoint: CGPoint(x: (rect?.maxX)!, y: CGFloat(numberOflines) * self.font.lineHeight), ofColor: UIColor.red, inView: self)
     }
-    
+    */
     func drawLineFromPoint(start : CGPoint, toPoint end:CGPoint, ofColor lineColor: UIColor, inView view:UIView) {
         //design the path
         let path = UIBezierPath()
@@ -242,5 +240,15 @@ extension UIImage {
         let resultImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         return resultImage
+    }
+}
+
+
+extension UIColor {
+    func image(_ size: CGSize = CGSize(width: 10, height: 10)) -> UIImage {
+        return UIGraphicsImageRenderer(size: size).image { rendererContext in
+            self.setFill()
+            rendererContext.fill(CGRect(origin: .zero, size: size))
+        }
     }
 }
