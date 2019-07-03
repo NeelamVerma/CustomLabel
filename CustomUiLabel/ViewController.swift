@@ -10,8 +10,10 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var attLabel: CustomLabel!
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.attLabel.attach()
         // Do any additional setup after loading the view, typically from a nib.
     }
 

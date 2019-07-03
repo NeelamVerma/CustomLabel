@@ -18,14 +18,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7nS-o3-Ooa" customClass="CustomLabel" customModule="CustomUiLabel" customModuleProvider="target">
-                                <rect key="frame" x="76" y="99" width="235" height="61"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7nS-o3-Ooa" customClass="CustomLabel" customModule="CustomUiLabel" customModuleProvider="target">
+                                <rect key="frame" x="76" y="99" width="235" height="58.5"/>
+                                <color key="backgroundColor" red="0.80508000930000001" green="0.8738463407" blue="0.64789295219999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <attributedString key="attributedText">
-                                    <fragment>
-                                        <string key="content">My name is buu. I Play football. I eat tortillas. i eat a Apple everyday. I go to office everyday. I am doing stuff. Neelam is disturbing me alwyas.</string>
+                                    <fragment content="My name is buu. I Play football. ">
                                         <attributes>
                                             <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                            <font key="NSFont" size="13" name=".SFNSText"/>
+                                            <font key="NSFont" size="25" name=".SFNSText"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
@@ -40,6 +40,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="attLabel" destination="7nS-o3-Ooa" id="feG-bv-SSV"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
