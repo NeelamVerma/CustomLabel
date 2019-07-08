@@ -10,38 +10,97 @@ import UIKit
 
 class CustomLabel: UILabel {
     
-    func attach() {
+    func attach(withColor: UIColor) {
         let fullString = NSMutableAttributedString(attributedString: self.attributedText!)
-        let image1Attachment = NSTextAttachment()
-        let img = UIColor.red.image(CGSize(width: 10, height: 10))
-        image1Attachment.bounds = CGRect(x: 100.0, y: 0, width: 10, height: 10)
-        image1Attachment.image = img
-        let str = NSAttributedString(attachment: image1Attachment)
-        fullString.append(str)
+//        let image1Attachment = NSTextAttachment()
+//        let img = UIColor.red.image(CGSize(width: 10, height: 10))
+//        image1Attachment.bounds = CGRect(x: 100.0, y: 0, width: 10, height: 10)
+//        image1Attachment.image = img
+//        let str = NSAttributedString(attachment: image1Attachment)
+//        fullString.append(str)
         //  with padding
-        /*
-        let img = UIImage(named: "icons8-play-50")?.maskWithColor(color: UIColor.red)
+        
+        let img = UIImage(named: "icons8-play-50")?.maskWithColor(color: withColor)
         print(self.font.pointSize)
         print(self.font.lineHeight)
         print(img?.size.height)
 
 
-      let newImage = img?.addImagePadding(x: 4.0, y: self.font.descender)
+      let newImage = img?.resizedImage(newSize: CGSize(width: self.font.pointSize, height: self.font.pointSize)).addHorizontalImagePadding(x: 20.0, y: self.font.descender)
+        
+        let image1Attachment = NSTextAttachment()
         image1Attachment.image = newImage
         let image1String = NSAttributedString(attachment: image1Attachment)
         
         // add the NSTextAttachment wrapper to our full string, then add some more text.
         fullString.insert(image1String, at: fullString.length - 1)
-        let img1 = UIImage(named: "icons8-play-50")?.maskWithColor(color: UIColor.red)
-        let newImage1 = img1?.addImagePadding1(x: 4.0, y: self.font.descender)
+        let img1 = UIImage(named: "icons8-play-50")?.maskWithColor(color: withColor)
+        let newImage1 = img1?.resizedImage(newSize: CGSize(width: self.font.pointSize, height: self.font.pointSize)).addHorizontalImagePadding1(x: 20.0, y: self.font.descender)
         let image1Attachment1 = NSTextAttachment()
         image1Attachment1.image = newImage1
         let image1String1 = NSAttributedString(attachment: image1Attachment1)
         fullString.insert(image1String1, at: 0)
- */
+ 
         
         // draw the result in a label
         self.attributedText = fullString
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let new = NSMutableAttributedString(attributedString: self.attributedText!)
+        new.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.blue, range: NSRange(location: 0, length: (attributedText?.length)!))
+        self.attributedText = new
+        
+    self.attributedText?.enumerateAttribute(NSAttributedString.Key.attachment, in: NSRange(location: 0, length: (attributedText?.length)!), options: [], using: { (value, range, stop) in
+        
+            if (value is NSTextAttachment){
+                let attachment: NSTextAttachment? = (value as? NSTextAttachment)
+                
+                if ((attachment?.image) != nil) {
+                    print("touchesBegan")
+                    let mutableAttr = attributedText!.mutableCopy() as! NSMutableAttributedString
+                    let newImage = attachment?.image?.maskWithColor(color: UIColor.blue)
+                    let image1Attachment = NSTextAttachment()
+                    image1Attachment.image = newImage
+                    let image1String = NSAttributedString(attachment: image1Attachment)
+                    //Remove the attachment
+                    mutableAttr.replaceCharacters(in: range, with: image1String)
+                    attributedText = mutableAttr
+                    //arrayOfRanges.append(range)
+                }else{
+                    print("No image attched")
+                }
+            }
+        })
+        
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let new = NSMutableAttributedString(attributedString: self.attributedText!)
+        new.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: (attributedText?.length)!))
+        self.attributedText = new
+        
+        self.attributedText?.enumerateAttribute(NSAttributedString.Key.attachment, in: NSRange(location: 0, length: (attributedText?.length)!), options: [], using: { (value, range, stop) in
+            
+            if (value is NSTextAttachment){
+                let attachment: NSTextAttachment? = (value as? NSTextAttachment)
+                
+                if ((attachment?.image) != nil) {
+                    print("touchesEnded")
+                    let mutableAttr = attributedText!.mutableCopy() as! NSMutableAttributedString
+                    let newImage = attachment?.image?.maskWithColor(color: UIColor.black)
+                    let image1Attachment = NSTextAttachment()
+                    image1Attachment.image = newImage
+                    let image1String = NSAttributedString(attachment: image1Attachment)
+                    //Remove the attachment
+                    mutableAttr.replaceCharacters(in: range, with: image1String)
+                    attributedText = mutableAttr
+                    //arrayOfRanges.append(range)
+                }else{
+                    print("No image attched")
+                }
+            }
+        })
     }
     
     // Only override draw() if you perform custom drawing.
@@ -200,11 +259,11 @@ extension UILabel {
 
 extension UIImage {
     
-    func addImagePadding(x: CGFloat, y: CGFloat) -> UIImage? {
+    func addHorizontalImagePadding(x: CGFloat, y: CGFloat) -> UIImage? {
         let width: CGFloat = size.width + x
         let height: CGFloat = size.height + y
         UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, 0)
-        let origin: CGPoint = CGPoint(x: (width - size.width) / 2, y: (height - size.height) / 2)
+        let origin: CGPoint = CGPoint(x: x, y: (height - size.height) / 2)
         draw(at: origin)
         let imageWithPadding = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -212,7 +271,7 @@ extension UIImage {
         return imageWithPadding
     }
     
-    func addImagePadding1(x: CGFloat, y: CGFloat) -> UIImage? {
+    func addHorizontalImagePadding1(x: CGFloat, y: CGFloat) -> UIImage? {
         let width: CGFloat = size.width + x
         let height: CGFloat = size.height + y
         UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, 0)
@@ -240,6 +299,25 @@ extension UIImage {
         let resultImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         return resultImage
+    }
+    
+    func imageWith(newSize: CGSize) -> UIImage {
+        let renderer = UIGraphicsImageRenderer(size: newSize)
+        let image = renderer.image { _ in
+            self.draw(in: CGRect.init(origin: CGPoint.zero, size: newSize))
+        }
+        return image
+    }
+    
+    func resizedImage(newSize: CGSize) -> UIImage {
+        // Guard newSize is different
+        guard self.size != newSize else { return self }
+        
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0);
+        self.draw(in: CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height))
+        let newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return newImage
     }
 }
 

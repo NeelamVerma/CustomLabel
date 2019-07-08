@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var attLabel: CustomLabel!
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.attLabel.attach()
+        self.attLabel.attach(withColor: UIColor.black)
 
         // with dynamic height
 //        let new = CustomLabel()
